@@ -48,10 +48,20 @@ int main()
 		printf("SHA1_Final failed\n");
 		return 1;
 	}
-	printf("SHA1 Digest: ");
+
+
+	FILE* md_txt_file = fopen("SHA-1.txt", "w+");
 	for (int i = 0; i < SHA_DIGEST_LENGTH; i++) {
-		printf("%02X ", hash[i]);
+		fprintf(md_txt_file, "%02X", hash[i]);
 	}
+
+	fclose(md_txt_file);
+	FILE* md_bin_file = fopen("SHA-1.hash", "wb+");
+	auto bytes_written = fwrite(hash, sizeof(unsigned char), SHA_DIGEST_LENGTH,md_bin_file);
+
+	fclose(md_bin_file);
+
+	printf("DONE!");
 
 	return 0;
 }

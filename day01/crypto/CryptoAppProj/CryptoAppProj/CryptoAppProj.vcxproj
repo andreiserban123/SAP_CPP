@@ -131,10 +131,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="SHA1_file.cpp" />
+    <Text Include="input.bin" />
+    <Text Include="SHA-1.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="input.bin" />
+    <None Include="SHA-1.hash" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="SHA256.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
