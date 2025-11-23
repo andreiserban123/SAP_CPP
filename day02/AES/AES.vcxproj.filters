@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AES_ECB_lowAPI.cpp">
+    <ClCompile Include="AES_CBC_lowAPI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
