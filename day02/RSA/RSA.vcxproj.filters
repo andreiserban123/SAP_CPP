@@ -15,13 +15,17 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="RSA_verifysign.cpp">
+    <None Include="RSAPrivateKey.pem" />
+    <None Include="RSAPublicKey.pem" />
+    <None Include="RSASignature.sig" />
+    <None Include="cipher.file" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="RSA_enc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="RSAPrivateKey.pem" />
-    <None Include="RSAPublicKey.pem" />
-    <None Include="RSASignature.sig" />
+    <Text Include="plain.txt" />
   </ItemGroup>
 </Project>

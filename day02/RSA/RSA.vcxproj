@@ -130,12 +130,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="RSA_verifysign.cpp" />
-  </ItemGroup>
-  <ItemGroup>
+    <None Include="cipher.file" />
     <None Include="RSAPrivateKey.pem" />
     <None Include="RSAPublicKey.pem" />
     <None Include="RSASignature.sig" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="RSA_enc.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="plain.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
