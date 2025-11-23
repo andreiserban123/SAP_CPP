@@ -34,7 +34,7 @@ int main()
 		unsigned short int current_block_length = (remaining_length > MESSAGE_BLOCK_LENGHT) ? MESSAGE_BLOCK_LENGHT : remaining_length;
 		result = SHA256_Update(&shaContext, message + (sizeof(message) - remaining_length), current_block_length);
 		if (result != 1) {
-			printf("SHA1_Update failed\n");
+			printf("SHA256_Update failed\n");
 			return 1;
 		}
 		remaining_length -= current_block_length;
@@ -52,8 +52,6 @@ int main()
 	for (int i = 0; i < SHA256_DIGEST_LENGTH; i++) {
 		printf("%02X ", hash[i]);
 	}
-
-
 
 	return 0;
 }
