@@ -30,6 +30,7 @@ int main() {
 	unsigned char* ciphertext = (unsigned char*) malloc(no_of_blocks * AES_BLOCK_SIZE);
 	if (ciphertext == NULL) {
 		printf("Error: Memory allocation failed\n");
+		free(ciphertext);
 		return 1;
 	}
 
