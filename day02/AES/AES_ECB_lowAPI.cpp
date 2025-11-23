@@ -13,7 +13,9 @@ int main() {
 	};
 	// AES key + prepare the key for usage
 	AES_KEY aes_key_128;
+	AES_KEY aes_key_decrypt;
 	AES_set_encrypt_key(key_128, sizeof(key_128) * 8, &aes_key_128);
+	AES_set_decrypt_key(key_128, sizeof(key_128) * 8, &aes_key_decrypt);
 
 	// encrypt the plaintext at AES block level
 	unsigned short int no_of_blocks = (sizeof(plaintext) / AES_BLOCK_SIZE);
@@ -26,6 +28,10 @@ int main() {
 
 
 	unsigned char* ciphertext = (unsigned char*) malloc(no_of_blocks * AES_BLOCK_SIZE);
+	if (ciphertext == NULL) {
+		printf("Error: Memory allocation failed\n");
+		return 1;
+	}
 
 	for(unsigned short int i = 0; i < no_of_blocks - 1; i++) {
 		AES_encrypt(
@@ -67,21 +73,52 @@ int main() {
 	}
 
 	// decrypt the ciphertext at AES block level
-	unsigned char* decryptedtext = (unsigned char*)malloc(no_of_blocks * AES_BLOCK_SIZE);
-	AES_KEY aes_key_decrypt;
-	AES_set_decrypt_key(key_128, sizeof(key_128) * 8, &aes_key_decrypt);
-	for (unsigned short int i = 0; i < no_of_blocks; i++) {
+	unsigned char* decryptedtext = (unsigned char*)malloc(sizeof(plaintext));
+
+	int no_block_ciphertext = no_of_blocks * AES_BLOCK_SIZE;
+
+	if(decryptedtext == NULL) {
+		printf("Error: Memory allocation failed\n");
+		free(ciphertext);
+		return 1;
+	}
+	memset(decryptedtext, 0x00, sizeof(plaintext));
+
+	for (unsigned short int i = 0; i < no_of_blocks - 1; i++) {
 		AES_decrypt(
 			ciphertext + (i * AES_BLOCK_SIZE),
 			decryptedtext + (i * AES_BLOCK_SIZE),
 			&aes_key_decrypt
 		);
 	}
-	printf("\n\nDecryptedtext:\n");
-	for (int i = 0; i < sizeof(plaintext) - 1; i++) { 
-		printf("%c", decryptedtext[i]);
+
+	if ((sizeof(plaintext) % AES_BLOCK_SIZE) != 0) {
+		unsigned char last_partial_block[AES_BLOCK_SIZE];
+		unsigned char no_bytes = sizeof(plaintext) % AES_BLOCK_SIZE;
+		memset(last_partial_block, 0x00, AES_BLOCK_SIZE);
+
+		AES_decrypt(
+			ciphertext + ((no_of_blocks - 1) * AES_BLOCK_SIZE),
+			last_partial_block,
+			&aes_key_decrypt
+		);
+		memcpy(decryptedtext + ((no_of_blocks - 1) * AES_BLOCK_SIZE), last_partial_block, no_bytes);
 	}
-	printf("\n");
+	else {
+		AES_decrypt(
+			ciphertext + ((no_of_blocks - 1) * AES_BLOCK_SIZE),
+			decryptedtext + ((no_of_blocks - 1) * AES_BLOCK_SIZE),
+			&aes_key_decrypt
+		);
+	}
+
+	if (memcmp(plaintext, decryptedtext, sizeof(plaintext)) != 0) {
+		printf("\nDecryption failed: Decrypted text does not match the original plaintext.\n");
+	}
+	else {
+		printf("\nDecryption successful: Decrypted text matches the original plaintext.\n");
+	}
+	printf("\n\nDecryptedtext:\n%s\n", decryptedtext);
 	free(decryptedtext);
 	free(ciphertext);
 
